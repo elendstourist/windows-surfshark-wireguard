@@ -17,7 +17,7 @@ To use this file:
 ## usage
 
 ```shell
-Usage: gen_wg_config.bash
+Usage: gen_wg_config.bash [-h]
    -g ignore generating profile files
    -n renew tokens
    -r regenerate the server conf files
