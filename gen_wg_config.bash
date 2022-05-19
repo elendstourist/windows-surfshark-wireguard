@@ -184,7 +184,7 @@ wg_check_pubkey() { # validates the public key registration process and confirms
         if [ "${now}" '<' "${expire_date}" ]; then
             echo "Current Date & Time  "${now}          # Display Run Date
             echo "Token will Expire at "${expire_date}  # Display Token Expiry
-            logger -t SSWG "[wg_check_pubkey] RUN DATE:${now}   TOKEN EXPIRES ON: ${expire_date}" # Log Status Information (logread -e SSWG)
+           #connectionName logger -t SSWG "[wg_check_pubkey] RUN DATE:${now}   TOKEN EXPIRES ON: ${expire_date}" # Log Status Information (logread -e SSWG)
         fi
         rm -f $token_expires
         echo "${tmpfile}" >> $token_expires
@@ -284,6 +284,9 @@ gen_client_confs() {
 
             srv_pub="$(echo $row | jq '.[3]')"
             srv_pub=$(eval echo $srv_pub)
+			
+			#srv_country="$(echo $row | jq '.[4]')"
+            #srv_country=$(eval echo $srv_country)
 
             file_name=${srv_host%$postf}
             file_name=${file_name}.prod
@@ -295,8 +298,10 @@ gen_client_confs() {
             srv_conf_file=${config_folder}/configs/${file_name}.conf
 
             echo -e "#$srv_host SERVER:[$server] LOAD:[$srv_load] TAGS:[$srv_tags] PUB:[$srv_pub}" > $srv_conf_file
-            srv_conf="[Interface]\nPrivateKey=$(eval echo $(jq '.prv' $wg_keys))\nAddress=10.14.0.2/8\n\n[Peer]\nPublicKey=o07k/2dsaQkLLSR0dCI/FUd3FLik/F/HBBcOGUkNQGo=\nAllowedIPs=172.16.0.36/32\nEndpoint=wgs.prod.surfshark.com:51820\nPersistentKeepalive=25\n\n[Peer]\nPublicKey=$srv_pub\nAllowedIPs=0.0.0.0/0\nEndpoint=${srv_host}:51820\nPersistentKeepalive=25\n"
-            echo -e "$srv_conf" >> $srv_conf_file
+            srv_conf="[Interface]\nPrivateKey=$(eval echo $(jq '.prv' $wg_keys))\nAddress=10.14.0.2/16\nDNS=162.252.172.57, 149.154.159.92\n[Peer]\nPublicKey=$srv_pub\nAllowedIPs=0.0.0.0/0\nEndpoint=${srv_host}:51820\n[Peer]\nPublicKey=o07k/2dsaQkLLSR0dCI/FUd3FLik/F/HBBcOGUkNQGo=\nAllowedIPs=172.16.0.36/32\nEndpoint=92.249.38.1:51820\n"
+                  
+		 echo -e "$srv_conf" >> $srv_conf_file
+			
         done
         file_removal="$server""_servers_file"
         file_removal=$(eval echo \${$file_removal})
