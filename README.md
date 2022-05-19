@@ -4,7 +4,7 @@ This is a simple script that generates wireguard client config files for surfsha
 
 You just need to `curl` and `jq`.
 
-I'm using this to generate configs on openwrt.
+I'm using this to generate wireguard-configs on windows because i don't like surfshark client.
 
 
 
@@ -12,14 +12,16 @@ I'm using this to generate configs on openwrt.
 To use this file:
 1. copy `config.json.sample` into `config.json`
 2. replace `config.json` values with your account values. Normally user your "email" and "password" that you use on your official client on Android, iOS, or web, not specially OpenVpn username and password
-3. run `gen_wg_config.sh`
+3. run `gen_wg_config.bash`
 
 ## usage
 
 ```shell
-Usage: gen_wg_config.sh [-f]
-  -f force register ignore checking
-  -g ignore generating profile files
+Usage: gen_wg_config.bash
+   -g ignore generating profile files
+   -n renew tokens
+   -r regenerate the server conf files
+   -Z clear settings, keys and server profile files
 ```
 
 # Caveates
